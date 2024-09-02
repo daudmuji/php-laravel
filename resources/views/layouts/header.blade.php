@@ -6,12 +6,6 @@
                 id="kt_header_menu_mobile_toggle">
             </div>
         </div>
-        <div class="header-logo me-5 me-md-10 flex-grow-1 flex-lg-grow-0">
-            <a href="{{ route('index') }}">
-                <img alt="Logo" src="{{ asset('assets/images/Bank_DKI_white_text_and_logo.svg') }}"
-                    class="logo-default h-150px" />
-            </a>
-        </div>
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
             @include('layouts.navbar')
             <div class="topbar d-flex align-items-stretch flex-shrink-0">
