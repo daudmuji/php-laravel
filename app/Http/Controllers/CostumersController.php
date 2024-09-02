@@ -10,11 +10,15 @@ use App\Models\Pekerjaan;
 use App\Models\Province;
 use App\Models\SubDistrict;
 use App\Models\Ward;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class CostumersController extends Controller
 {
+
+    use AuthorizesRequests;
+
     private static $title = 'Nasabah';
 
     static function breadcrumb()
@@ -31,21 +35,22 @@ class CostumersController extends Controller
      */
     public function index(CostumersDataTable $dataTable)
     {
-        $this->authorize('costumers_access');
-        $title = 'Data ' . self::$title;
+//        $this->authorize('costumers_access');
 
         $breadcrumbs = [
             HomeController::breadcrumb(),
             self::breadcrumb(),
         ];
 
-        return $dataTable->render('nasabah.index', compact('title', 'breadcrumbs'));
+        $title = 'Data ' . self::$title;
+
+        return $dataTable->render('nasabah.index', compact('breadcrumbs', 'title'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function create()
     {
@@ -57,7 +62,6 @@ class CostumersController extends Controller
             self::breadcrumb(),
             [$title, route('nasabah.create')],
         ];
-
 
         $stmtPekerjaan = Pekerjaan::orderBy('id')->get();
 
@@ -78,14 +82,14 @@ class CostumersController extends Controller
             $stmtWard = Ward::where('kode', 'kode_kelurahan')->get();
         }
 
-        return view('nasabah.create', compact('title', 'breadcrumbs', 'stmtPekerjaan', 'stmtProvince', 'stmtCity', 'stmtSubdistrict', 'stmtWard'));
+        return view('nasabah.create', compact('breadcrumbs','title', 'stmtPekerjaan', 'stmtProvince', 'stmtCity', 'stmtSubdistrict', 'stmtWard'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CostumersRequest $request)
     {
