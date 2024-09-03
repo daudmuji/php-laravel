@@ -3,7 +3,12 @@
 namespace App\DataTables;
 
 use App\Models\Costumers;
+use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Illuminate\Support\Facades\Gate;
+use Yajra\DataTables\EloquentDataTable;
+use Yajra\DataTables\Exceptions\Exception;
+use Yajra\DataTables\Html\Builder;
+use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
@@ -13,9 +18,9 @@ class CostumersDataTable extends DataTable
      * Build DataTable class.
      *
      * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
+     * @throws Exception
      */
-    public function dataTable($query)
+    public function dataTable(mixed $query):EloquentDataTable
     {
         return datatables()
             ->eloquent(
@@ -60,10 +65,8 @@ class CostumersDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Costumers $model
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Costumers $model)
+    public function query(Costumers $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -71,9 +74,9 @@ class CostumersDataTable extends DataTable
     /**
      * Optional method if you want to use html builder.
      *
-     * @return \Yajra\DataTables\Html\Builder
+     * @return Builder
      */
-    public function html()
+    public function html(): HtmlBuilder
     {
         return $this->builder()
             ->setTableId('costumers-table')
@@ -81,7 +84,7 @@ class CostumersDataTable extends DataTable
             ->minifiedAjax()
             ->dom("<'row'<'col-sm-2'f><'col-sm-10'>>" . "<'row'<'col-sm-12'tr>>" . "<'row'<'col-sm-1 mt-1'l><'col-sm-4 mt-3'i><'col-sm-7'p>>")
 //            ->buttons(['excel'])
-            ->scrollX(true)
+            ->scrollX()
             ->scrollY('500px')
             ->fixedColumns(['left' => 3, 'right' => 1])
             ->language(['processing' => '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>'])
@@ -100,7 +103,7 @@ class CostumersDataTable extends DataTable
      *
      * @return array
      */
-    protected function getColumns()
+    protected function getColumns(): array
     {
         return [
             Column::make('DT_RowIndex')->title('No.')->searchable(false)->orderable(false)->addClass('text-center'),
@@ -117,12 +120,10 @@ class CostumersDataTable extends DataTable
             Column::make('nominal_setor')->title('Nominal Setor'),
             Column::make('is_approved')
                 ->title('Approved')
-                ->searchable(true)
-                ->orderable(true)
+                ->searchable()
+                ->orderable()
                 ->width(100)
                 ->addClass('text-center min-w-100px'),
-//            Column::make('created_at'),
-//            Column::make('updated_at'),
         ];
     }
 

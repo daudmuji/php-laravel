@@ -18,6 +18,16 @@ Route::get('/stmtNasabah/getCityByProvinci', [CostumersController::class, 'getCi
 Route::get('/stmtNasabah/getSubDistrictByCity', [CostumersController::class, 'getSubDistrictByCity'])->name('stmtNasabah.get-kecamatan-by-kode-kota');
 Route::get('/stmtNasabah/getWardBySubDistrict', [CostumersController::class, 'getWardBySubDistrict'])->name('stmtNasabah.get-kelurahan-by-kode-kecamatan');
 
+Route::name('manajemen-user.')->group(function () {
+    Route::get('/manajemen-user/{user}/buka-blokir', [UserController::class, 'unlockUser'])->name('buka-blokir')->middleware('permission:user_unblock');
+    Route::get('/manajemen-user/{user}/lepas-ip', [UserController::class, 'resetIPUser'])->name('lepas-ip')->middleware('permission:user_remove_ip');
+    Route::get('/profile', [UserController::class, 'changeProfile'])->name('change-profile');
+    Route::put('/update-profile', [UserController::class, 'updateProfile'])->name('update-profile');
+    Route::get('/remove-profile-picture', [UserController::class, 'removeProfilePicture'])->name('remove-profile-picture');
+});
+Route::resource('/manajemen-user', UserController::class, ['parameters' => ['manajemen-user' => 'id']])->except('destroy');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -14,6 +14,7 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        Permission::create(['name' => 'costumers_access']);
         Permission::create(['name' => 'costumers_create']);
         Permission::create(['name' => 'costumers_edit']);
 
@@ -21,9 +22,11 @@ class RolePermissionSeeder extends Seeder
         Role::create(['name' => 'approval']);
 
         $roleCS = Role::findByName('cs');
+        $roleCS->givePermissionTo('costumers_access');
         $roleCS->givePermissionTo('costumers_create');
 
         $approval = Role::findByName('approval');
+        $approval->givePermissionTo('costumers_access');
         $approval->givePermissionTo('costumers_edit');
     }
 

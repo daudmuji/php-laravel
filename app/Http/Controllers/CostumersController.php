@@ -21,13 +21,6 @@ class CostumersController extends Controller
 
     private static $title = 'Nasabah';
 
-    static function breadcrumb()
-    {
-        return [
-            self::$title, route('nasabah.index')
-        ];
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -36,15 +29,9 @@ class CostumersController extends Controller
     public function index(CostumersDataTable $dataTable)
     {
 //        $this->authorize('costumers_access');
-
-        $breadcrumbs = [
-            HomeController::breadcrumb(),
-            self::breadcrumb(),
-        ];
-
         $title = 'Data ' . self::$title;
 
-        return $dataTable->render('nasabah.index', compact('breadcrumbs', 'title'));
+        return $dataTable->render('nasabah.index', compact( 'title'));
     }
 
     /**
@@ -57,11 +44,6 @@ class CostumersController extends Controller
         $this->authorize('costumers_create');
         $title = 'Tambah ' . self::$title;
 
-        $breadcrumbs = [
-            HomeController::breadcrumb(),
-            self::breadcrumb(),
-            [$title, route('nasabah.create')],
-        ];
 
         $stmtPekerjaan = Pekerjaan::orderBy('id')->get();
 
@@ -82,7 +64,7 @@ class CostumersController extends Controller
             $stmtWard = Ward::where('kode', 'kode_kelurahan')->get();
         }
 
-        return view('nasabah.create', compact('breadcrumbs','title', 'stmtPekerjaan', 'stmtProvince', 'stmtCity', 'stmtSubdistrict', 'stmtWard'));
+        return view('nasabah.create', compact('title', 'stmtPekerjaan', 'stmtProvince', 'stmtCity', 'stmtSubdistrict', 'stmtWard'));
     }
 
     /**
